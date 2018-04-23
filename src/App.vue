@@ -3,7 +3,7 @@
     <div class="container">
       <h2>Quotes App</h2>
         <div class="bar">
-            <span :style="{ width: size + '%' }">{{ size }}%</span>
+            <span :style="{ width: (quotes.length/10) * 100 + '%' }">{{ (quotes.length/10) * 100 }}%</span>
         </div>
       <div class="row">
         <div class="col-lg-5">
@@ -11,6 +11,10 @@
             <textarea v-model="quote" cols="30" rows="10"></textarea>
             <button @click.prevent="addQuote">Add Quote</button>
           </form>
+          <div class="alert alert-info" role="alert">
+            Click On  a Quote to Delete
+          </div>
+
         </div>
         <div class="col-lg-7">
           <quote v-for="(quote, item) in quotes" :key="item" :quote="quote" :item="item" :removed="removeQuote"></quote>
@@ -31,7 +35,6 @@ export default {
             '"Glory is fleeting, but obscurity is forever."'
         ],
         quote:'',
-        size: 0
     }
   },
     components: {
@@ -40,25 +43,17 @@ export default {
     methods:{
       addQuote(){
           if(this.quotes.length == 10){
-              alert('You can Only Add 10 Quotes, Please remove some.');
-              return false;
+              return alert('You can Only Add 10 Quotes, Please remove some.');
           }
           if (this.quote.length == 0) {
-              alert('Please Enter A Quote')
-          }else {
-              this.quotes.push(this.quote);
-              this.quote = '';
-              this.size = (this.quotes.length/10) * 100;
-              this.updateProgress();
+              return alert('Please Enter A Quote');
           }
-
+          this.quotes.push(this.quote);
+          this.quote = '';
       },
         removeQuote(event){
             this.quotes.splice(event,1);
             this.updateProgress();
-        },
-        updateProgress(){
-            this.size = (this.quotes.length/10) * 100;
         }
     },
     mounted(){
